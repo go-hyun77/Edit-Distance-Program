@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void EditDistance(string x, string y);
+void EditDistance(string x, string y, int a, int b);
 
 int main() {
 	string input1;
@@ -14,7 +14,7 @@ int main() {
 	cout << "Enter 2nd string: ";
 	cin >> input2;
 
-	EditDistance(input1, input2);
+	EditDistance(input1, input2, input1.length(), input2.length());
 
 
 
@@ -24,8 +24,8 @@ int main() {
 	
 }
 
-void EditDistance(string x, string y) {
+void EditDistance(string x, string y, int a, int b) {
 
-
-
+	
+	
 }
