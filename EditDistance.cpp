@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void EditDistance(string x, string y, int a, int b);
+int EditDistance(string x, string y, int a, int b);
 
 int main()
 {
@@ -21,10 +21,10 @@ int main()
     system("pause");
 }
 
-void EditDistance(string x, string y, int a, int b)
+int EditDistance(string x, string y, int a, int b)
 {
-    string1 = x; 
-    string2 = y; 
+    string string1 = x; 
+    string string2 = y; 
     int** table = new int*[a];        //create 2d array for storing words
     for (int i = 0; i < a; i++) {
         table[i] = new int[b];
@@ -34,12 +34,12 @@ void EditDistance(string x, string y, int a, int b)
 
     for (int k = 0; k < a+1; k++)
     {
-        table[k]][0] = k
+        table[k][0] = k;
     }
 
-    for (int j = 0; k < b+1; j++)
+    for (int j = 0; j < b+1; j++)
     {
-        table[0][j] = j
+        table[0][j] = j;
     }
 
     for (int l = 1; l < b+1; l++)
