@@ -4,7 +4,9 @@
 
 using namespace std;
 
-int EditDistance(string x, string y, int a, int b);
+void EditDistance(string x, string y, int a, int b);
+
+
 
 int main()
 {
@@ -16,9 +18,7 @@ int main()
     cout << "Enter 2nd string: ";
     cin >> input2;
 
-    cout <<"edit distance of: " << EditDistance(input1, input2, input1.length(), input2.length());
-
-    system("pause");
+    return 0; 
 }
 
 void EditDistance(string x, string y, int a, int b)
@@ -57,7 +57,9 @@ void EditDistance(string x, string y, int a, int b)
                 table[m][l] = min(table[m-1][l-1], min(table[m-1][l], table[m][l-1])); 
             }
         }
+        cout <<"edit distance of: " <<table[m+1][l+1]; 
     }
 
-    return table[a][b];
+    
+
 }
