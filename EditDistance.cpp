@@ -16,9 +16,9 @@ int main()
     cout << "Enter 2nd string: ";
     cin >> input2;
 
-    cout <<"edit distance of: " << EditDistance(input1, input2, input1.length(), input2.length());
+    cout <<"edit distance of: " << EditDistance(input1, input2, input1.length(), input2.length()) <<endl;
 
-    system("pause");
+    return 0; 
 }
 
 int EditDistance(string x, string y, int a, int b)
@@ -26,8 +26,8 @@ int EditDistance(string x, string y, int a, int b)
     string string1 = x; 
     string string2 = y; 
     int** table = new int*[a];        //create 2d array for storing words
-    for (int i = 0; i < a; i++) {
-        table[i] = new int[b];
+    for (int i = 0; i < a+1; i++) {
+        table[i] = new int[b+1];
     }
 
     int distance = 0; 
@@ -52,7 +52,7 @@ int EditDistance(string x, string y, int a, int b)
             }
             else
             {
-                table[m][l] = min(table[m-1][l-1], min(table[m-1][l], table[m][l-1])); 
+                table[m][l] = 1 + min(table[m-1][l-1], min(table[m-1][l], table[m][l-1])); 
             }
         }
     }
