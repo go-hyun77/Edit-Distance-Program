@@ -5,13 +5,14 @@
 using namespace std;
 
 void EditDistance(string x, string y, int a, int b);
+
 enum step_direction
 {
     STEP_DIRECTION_BOTTTOMRIGHT,
     STEP_DIRECTION_RIGHT,
     STEP_DIRECTION_DOWN
 };
-vector<step_direction> Alignment(int *arr [], int a, int b);
+vector<step_direction> Alignment(int *arr[], int a, int b);
 
 int main()
 {
@@ -32,20 +33,21 @@ void EditDistance(string x, string y, int a, int b)
 {
     string string1 = x;
     string string2 = y;
-    int **table = new int *[a]; //create 2d array for storing words
-    for (int i = 0; i < a; i++)
+
+    int **table = new int *[a + 1]; //create 2d array for storing words
+    for (int i = 0; i < a+1; i++)
     {
-        table[i] = new int[b];
+        table[i] = new int[b + 1];
     }
 
     int distance = 0;
 
-    for (int k = 0; k < a + 1; k++)
+    for (int k = 0; k < a+1; k++)
     {
         table[k][0] = k;
     }
 
-    for (int j = 0; j < b + 1; j++)
+    for (int j = 0; j < b+1; j++)
     {
         table[0][j] = j;
     }
@@ -60,26 +62,26 @@ void EditDistance(string x, string y, int a, int b)
             }
             else
             {
-                table[m][l] = min(table[m - 1][l - 1], min(table[m - 1][l], table[m][l - 1]));
+                table[m][l] = 1 + min(table[m - 1][l - 1], min(table[m - 1][l], table[m][l - 1]));
             }
         }
-        cout << "edit distance of: " << table[a + 1][b + 1];
     }
-    vector<step_direction> fixed_align = Alignment(table, a + 1, b + 1);
-    cout << fixed_align[1]; 
+    cout << "edit distance of: " << table[a][b] << endl;
+    vector<step_direction> fixed_align = Alignment(table, a, b);
+    cout << fixed_align[0];
 }
 
-vector<step_direction> Alignment(int *arr [], int a, int b)
+vector<step_direction> Alignment(int *arr[], int a, int b)
 {
     vector<step_direction> temp;
     int column = a;
     int row = b;
-
+    cout << "column:" <<column <<endl <<"row: " <<row <<endl; 
     if (column == 0 && row == 0)
     {
         return temp;
     }
-    else if(column == 0)
+    else if (column == 0)
     {
         temp.push_back(STEP_DIRECTION_DOWN);
         row--;
@@ -96,26 +98,26 @@ vector<step_direction> Alignment(int *arr [], int a, int b)
         if ((arr[row - 1][column - 1] <= arr[row][column]) && ((arr[row - 1][column] >= arr[row][column]) && (arr[row][column - 1] >= arr[row][column])))
         {
             temp.push_back(STEP_DIRECTION_BOTTTOMRIGHT);
-            row--; 
-            column--; 
+            row--;
+            column--;
             return Alignment(arr, column, row);
         }
-        else if ((arr[row-1][column] < arr[row][column]) && (arr[row-1][column] < arr[row][column-1]) )
+        else if ((arr[row - 1][column] < arr[row][column]) && (arr[row - 1][column] < arr[row][column - 1]))
         {
-            temp.push_back(STEP_DIRECTION_RIGHT); 
-            column--; 
+            temp.push_back(STEP_DIRECTION_RIGHT);
+            column--;
             return Alignment(arr, column, row);
         }
-        else if( (arr[row][column-1] < arr[row][column]) && (arr[row][column-1] <= arr[row-1][column]) )
+        else if ((arr[row][column - 1] < arr[row][column]) && (arr[row][column - 1] <= arr[row - 1][column]))
         {
-            temp.push_back(STEP_DIRECTION_DOWN); 
+            temp.push_back(STEP_DIRECTION_DOWN);
             row--;
             return Alignment(arr, column, row);
         }
         else
         {
-            cout<<"Unexpected Check" <<endl;
-            return temp; 
+            cout << "Unexpected Check" << endl;
+            return temp;
         }
     }
 
