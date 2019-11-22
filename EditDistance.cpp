@@ -1,31 +1,51 @@
+/* Edit Distance program by Jimmy Xuan, jimmyxuan@csu.fullerton.edu. 890457625
+
+The program has been run on Unbuntu and has been proven to work properly. 
+
+The Program uses dynamic programming to create a dynamic 2D array to calculate the edit distance between two strings through standard input. 
+The program will output a matrix with calculations and edit distance along with alignment between two strings. 
+
+
+Steps to run the source code: 
+    1. Have a linux enviornment ready
+    2. Open terminal and go to the directory with the source code
+    3. to compile the source code (on Ubuntu "g++ EditDistance.cpp" in terminal(optional to output to a named executable file with -o))
+    4. run the code ( ./a.out  in terminal in Ubuntu)
+    5. Enter the 2 strings and hit enter and done. 
+A matrix with the calculations of the edit distance will display along with a message displaying the edit distance: 
+The program will also output the proper alignment between the two string. To run again repeat step 3. 
+
+
+*/
+
 #include <iostream>
 #include <string>
 #include <algorithm>
 #include <vector>
 using namespace std;
 
-enum step_direction
+enum step_direction                         //Enumeration of edit path taken
 {
     STEP_DIRECTION_BOTTTOMRIGHT,
     STEP_DIRECTION_RIGHT,
     STEP_DIRECTION_DOWN
 };
 
+//function prototyping
 void EditDistance(string x, string y, int a, int b);
 
 vector<step_direction> Alignment(int *arr[], int a, int b, vector<step_direction> path);
 
-int EditDistance(string x, string y);
-
 int main()
-{
-	string input1;
-	string input2;
+{   
+    //main function takes two inputs and runs the EditDistance function
+    string input1;
+    string input2;
 
-	cout << "Enter 1st string: ";
-	cin >> input1;
-	cout << "Enter 2nd string: ";
-	cin >> input2;
+    cout << "Enter 1st string: ";
+    cin >> input1;
+    cout << "Enter 2nd string: ";
+    cin >> input2;
 
     EditDistance(input1, input2, input1.length(), input2.length());
 
@@ -37,7 +57,7 @@ void EditDistance(string x, string y, int a, int b)
     string string1 = x;
     string string2 = y;
 
-    int **table = new int *[a + 1]; //create 2d array for storing words
+    int **table = new int *[a + 1];         //create 2d array for storing ints
     for (int i = 0; i < a + 1; i++)
     {
         table[i] = new int[b + 1];
@@ -45,7 +65,7 @@ void EditDistance(string x, string y, int a, int b)
 
     int distance = 0;
 
-    for (int k = 0; k < a + 1; k++)
+    for (int k = 0; k < a + 1; k++)     //fills out the first rows and columns of array
     {
         table[k][0] = k;
     }
@@ -55,23 +75,23 @@ void EditDistance(string x, string y, int a, int b)
         table[0][j] = j;
     }
 
-    for (int l = 1; l < b + 1; l++)
-    {
+    for (int l = 1; l < b + 1; l++)     //fills out the 2D array based on previously calculated results based on each character comparisons of the strings
+    {                                   
         for (int m = 1; m < a + 1; m++)
         {
-            if (string1[m - 1] == string2[l - 1])
+            if (string1[m - 1] == string2[l - 1])   //if matches take the previous upper left from current position 
             {
                 table[m][l] = table[m - 1][l - 1];
             }
-            else
+            else    //if no match, take the smallest path to current node and add 1
             {
                 table[m][l] = 1 + min(table[m - 1][l - 1], min(table[m - 1][l], table[m][l - 1]));
             }
         }
     }
 
-    for (int i = 0; i < a + 1; i++)
-    { // table print
+    for (int i = 0; i < a + 1; i++)  // table print
+    { 
 
         cout << table[i][0] << " | ";
 
@@ -82,15 +102,15 @@ void EditDistance(string x, string y, int a, int b)
 
         cout << endl;
     }
-
-    cout << "edit distance of: " << table[a][b] << endl;
+    //outputs edit distance and runs Alignment function
+    cout << "edit distance of: " << table[a][b] << endl;   
     vector<step_direction> fixed_align = Alignment(table, a, b, fixed_align);
     string Align1 = "";
     string Align2 = "";
 
     int k = 0;
     int j = 0;
-    for (int x = fixed_align.size() - 1; x >= 0; x--)
+    for (int x = fixed_align.size() - 1; x >= 0; x--)   //aligns both strings based on matrix
     {
         if (fixed_align[x] == STEP_DIRECTION_BOTTTOMRIGHT || fixed_align[x] == STEP_DIRECTION_DOWN)
         {
@@ -115,8 +135,8 @@ void EditDistance(string x, string y, int a, int b)
             Align2 += "_";
         }
     }
-
-    cout << "Alignment for the strings: " << endl
+    //outputs algined strings
+    cout << "Alignment for the strings: " << endl 
          << Align1 << endl
          << Align2 << endl;
 }
@@ -125,11 +145,12 @@ vector<step_direction> Alignment(int *arr[], int a, int b, vector<step_direction
 {
     int row = a;
     int column = b;
-    if (column == 0 && row == 0)
+
+    if (column == 0 && row == 0)    //if at [0][0] in matrix it is finished
     {
         return path;
     }
-    else if (column == 0)
+    else if (column == 0)           //at an edge so can only go one way
     {
         path.push_back(STEP_DIRECTION_DOWN);
         row--;
@@ -143,6 +164,7 @@ vector<step_direction> Alignment(int *arr[], int a, int b, vector<step_direction
     }
     else
     {
+        //checks diagonal and conditional
         if ((arr[row - 1][column - 1] <= arr[row][column]) && ((arr[row - 1][column] >= arr[row][column]) && (arr[row][column - 1] >= arr[row][column])))
         {
             path.push_back(STEP_DIRECTION_BOTTTOMRIGHT);
@@ -151,6 +173,7 @@ vector<step_direction> Alignment(int *arr[], int a, int b, vector<step_direction
 
             return Alignment(arr, row, column, path);
         }
+        //if diagonal is strictly less than current 
         else if (arr[row - 1][column - 1] < arr[row][column])
         {
             path.push_back(STEP_DIRECTION_BOTTTOMRIGHT);
@@ -181,68 +204,4 @@ vector<step_direction> Alignment(int *arr[], int a, int b, vector<step_direction
     }
 
     return path;
-=======
-	cout << endl << "Edit distance of: " << EditDistance(input1, input2) << endl;
-
-	system("pause");
-}
-
-int EditDistance(string x, string y) {
-	int m = x.size();
-	int n = y.size();
-
-	int** table = new int*[m + 1];					//create dynamic 2d array for edit distance table
-	for (int i = 0; i < (m + 1); i++) {
-		table[i] = new int[n + 1];
-	}
-
-	
-	for (int i = 0; i < (m + 1); i++) {				//fill 1st row with 0 1 2 3 4...
-		table[i][0] = i;
-	}
-	
-	for (int j = 0; j < (n + 1); j++) {				//fill 1st column with 0 1 2 3 4...
-		table[0][j] = j;
-	}
-
-	for (int i = 1; i < (m + 1); i++) {				//recursive edit distance 
-		for (int j = 1; j < (n + 1); j++) {
-			if (x[i - 1] == y[j - 1]) {
-				table[i][j] = table[i - 1][j - 1];		
-			}
-			else {
-				table[i][j] = 1 + min(table[i - 1][j - 1], min(table[i - 1][j], table[i][j - 1]));
-			}
-		}
-	}
-
-	int distance = table[m][n];
-
-	//_______________table print_________________
-
-	cout << "    ";									
-
-
-	for (int i = 0; i < (n + 1); i++) {				//print first row of 0 1 2 3 4...
-		cout << i << "   ";
-	}
-	
-	cout << endl; 
-
-	for (int i = 0; i < m + 1; i++) {				//table print
-		cout << endl;
-		cout << table[i][0] << "   ";				//print first column of 0 1 2 3 4..
-
-		for (int j = 0; j < n + 1; j++) {			//fill out table
-			cout << table[i][j] << "   ";
-			}
-		cout << endl;
-	}
-
-	for (int i = 0; i < m + 1; i++) {				//free memory	
-		delete[] table[i];
-	}
-	delete[] table;
-
-	return distance;
 }
