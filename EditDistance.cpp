@@ -12,6 +12,7 @@ enum step_direction
     STEP_DIRECTION_RIGHT,
     STEP_DIRECTION_DOWN
 };
+
 vector<step_direction> Alignment(int *arr[], int a, int b);
 
 int main()
@@ -35,19 +36,19 @@ void EditDistance(string x, string y, int a, int b)
     string string2 = y;
 
     int **table = new int *[a + 1]; //create 2d array for storing words
-    for (int i = 0; i < a+1; i++)
+    for (int i = 0; i < a + 1; i++)
     {
         table[i] = new int[b + 1];
     }
 
     int distance = 0;
 
-    for (int k = 0; k < a+1; k++)
+    for (int k = 0; k < a + 1; k++)
     {
         table[k][0] = k;
     }
-
-    for (int j = 0; j < b+1; j++)
+    cout << endl;
+    for (int j = 0; j < b + 1; j++)
     {
         table[0][j] = j;
     }
@@ -66,17 +67,39 @@ void EditDistance(string x, string y, int a, int b)
             }
         }
     }
+
+    for (int i = 0; i < a + 1; i++)
+    { // table print
+        cout << endl;
+
+        cout << table[i][0] << "   ";
+
+        for (int j = 0; j < b + 1; j++)
+        {
+            cout << table[i][j] << "   ";
+        }
+
+        cout << endl;
+    }
+
     cout << "edit distance of: " << table[a][b] << endl;
     vector<step_direction> fixed_align = Alignment(table, a, b);
-    cout << fixed_align[0];
+    if (!fixed_align.empty())
+    {
+        cout << fixed_align[0] << endl;
+    }
+    else
+        cout << "empty!" << endl;
 }
 
 vector<step_direction> Alignment(int *arr[], int a, int b)
 {
     vector<step_direction> temp;
-    int column = a;
-    int row = b;
-    cout << "column:" <<column <<endl <<"row: " <<row <<endl; 
+    int row = a;
+    int column = b;
+    //cout <<a <<"   "  <<b <<endl;
+    cout << "column:" << column << endl
+         << "row: " << row << endl;
     if (column == 0 && row == 0)
     {
         return temp;
@@ -85,13 +108,13 @@ vector<step_direction> Alignment(int *arr[], int a, int b)
     {
         temp.push_back(STEP_DIRECTION_DOWN);
         row--;
-        return Alignment(arr, column, row);
+        return Alignment(arr, row, column);
     }
     else if (row == 0)
     {
         temp.push_back(STEP_DIRECTION_RIGHT);
         column--;
-        return Alignment(arr, column, row);
+        return Alignment(arr, row, column);
     }
     else
     {
@@ -100,19 +123,22 @@ vector<step_direction> Alignment(int *arr[], int a, int b)
             temp.push_back(STEP_DIRECTION_BOTTTOMRIGHT);
             row--;
             column--;
-            return Alignment(arr, column, row);
+            cout << "diag?" << endl;
+            return Alignment(arr, row, column);
         }
-        else if ((arr[row - 1][column] < arr[row][column]) && (arr[row - 1][column] < arr[row][column - 1]))
-        {
-            temp.push_back(STEP_DIRECTION_RIGHT);
-            column--;
-            return Alignment(arr, column, row);
-        }
-        else if ((arr[row][column - 1] < arr[row][column]) && (arr[row][column - 1] <= arr[row - 1][column]))
+        else if ((arr[row - 1][column] < arr[row][column]) && (arr[row - 1][column] <= arr[row][column - 1]))
         {
             temp.push_back(STEP_DIRECTION_DOWN);
             row--;
-            return Alignment(arr, column, row);
+            cout << "right?" << endl;
+            return Alignment(arr, row, column);
+        }
+        else if ((arr[row][column - 1] < arr[row][column]) && (arr[row][column - 1] <= arr[row - 1][column]))
+        {
+            temp.push_back(STEP_DIRECTION_RIGHT);
+            column--;
+            cout << "down" << endl;
+            return Alignment(arr, row, column);
         }
         else
         {
