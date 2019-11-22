@@ -52,23 +52,24 @@ int EditDistance(string x, string y) {
 
 	int distance = table[m][n];
 
-	cout << "    ";
+	//_______________table print_________________
 
-	for (int i = 0; i < (m + 1); i++) {
-		cout << table[i][0] << "   ";
+	cout << "    ";									
+
+
+	for (int i = 0; i < (n + 1); i++) {				//print first row of 0 1 2 3 4...
+		cout << i << "   ";
 	}
 	
 	cout << endl; 
 
-	for (int i = 0; i < m + 1; i++) {				// table print
+	for (int i = 0; i < m + 1; i++) {				//table print
 		cout << endl;
+		cout << table[i][0] << "   ";				//print first column of 0 1 2 3 4..
 
-		cout << table[i][0] << "   ";
-
-		for (int j = 0; j < n + 1; j++) {
+		for (int j = 0; j < n + 1; j++) {			//fill out table
 			cout << table[i][j] << "   ";
 			}
-
 		cout << endl;
 	}
 
