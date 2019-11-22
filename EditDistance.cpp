@@ -146,29 +146,29 @@ vector<step_direction> Alignment(int *arr[], int a, int b, vector<step_direction
             path.push_back(STEP_DIRECTION_BOTTTOMRIGHT);
             row--;
             column--;
-            cout<<"diag"<<endl;
+
             return Alignment(arr, row, column, path);
         }
-        else if(arr[row - 1][column - 1] < arr[row][column])
+        else if (arr[row - 1][column - 1] < arr[row][column])
         {
             path.push_back(STEP_DIRECTION_BOTTTOMRIGHT);
             row--;
             column--;
-            cout<<"diag"<<endl;
+
             return Alignment(arr, row, column, path);
         }
         else if ((arr[row - 1][column] < arr[row][column]) && (arr[row - 1][column] <= arr[row][column - 1]))
         {
             path.push_back(STEP_DIRECTION_DOWN);
             row--;
-             cout<<"down"<<endl;
+
             return Alignment(arr, row, column, path);
         }
         else if ((arr[row][column - 1] < arr[row][column]) && (arr[row][column - 1] <= arr[row - 1][column]))
         {
             path.push_back(STEP_DIRECTION_RIGHT);
             column--;
-             cout<<"right"<<endl;
+
             return Alignment(arr, row, column, path);
         }
         else
