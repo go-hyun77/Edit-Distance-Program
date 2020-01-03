@@ -1,22 +1,3 @@
-/* Edit Distance program by Jimmy Xuan, jimmyxuan@csu.fullerton.edu. 890457625
-
-The program has been run on Unbuntu and has been proven to work properly. 
-
-The Program uses dynamic programming to create a dynamic 2D array to calculate the edit distance between two strings through standard input. 
-The program will output a matrix with calculations and edit distance along with alignment between two strings. 
-
-
-Steps to run the source code: 
-    1. Have a linux enviornment ready
-    2. Open terminal and go to the directory with the source code
-    3. to compile the source code (on Ubuntu "g++ EditDistance.cpp" in terminal(optional to output to a named executable file with -o))
-    4. run the code ( ./a.out  in terminal in Ubuntu)
-    5. Enter the 2 strings and hit enter and done. 
-A matrix with the calculations of the edit distance will display along with a message displaying the edit distance: 
-The program will also output the proper alignment between the two string. To run again repeat step 3. 
-
-
-*/
 
 #include <iostream>
 #include <string>
